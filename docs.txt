@@ -1,0 +1,6 @@
+npx express-generator
+npm install -g express-generator
+express
+express --view=ejs <Server>
+npm install
+npm start
