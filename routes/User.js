@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-let authenticate = (req, res, next) => {
-  var authenticate = req.header('Authenticate');
+var authenticate = (req, res, next) => {
+  var authenticate = req.header('Authorization');
   var array_auth = authenticate.split(' ');
 
   // console.log(array_auth[1]);
@@ -32,11 +32,15 @@ router.get('/:id_user', (req, res) => {
 });   //create or update
 
 router.post('/', authenticate, (req, res) => {
+  console.log(ahihi.length);
   res.json({'xu_ly': 'them user moi ', data_send: req.body});
 });//delete
 
 router.post('/sign-up', (req, res) => {
-  res.json({'': '', data_send: req.body});
+  res.json({
+    'xu_ly': 'dang ky user moi ', 
+    data_send: req.body
+  });
 });
 
 module.exports = router;

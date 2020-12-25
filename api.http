@@ -34,10 +34,11 @@ GET http://localhost:4000/User/20
 
 POST http://localhost:4000/User
 Content-Type: application/json
+Authorization: Basic eHVhbm5ndXllbjowNDA5MDA= 
 
 {
     "name": "Xuan Nguyen",
-    "account": "nkoxngo123",
-    "password": "123456",
+    "account": "xuannguyen",
+    "password": "040900",
     "email": "muayarmy123@gmail.com"
 }
