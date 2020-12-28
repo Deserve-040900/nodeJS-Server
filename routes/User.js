@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const MongoClient = require('mongodb').MongoClient;
+
+const url = 'mongodb://localhost:27017';
+
+const dbName = 'database_mongodb';
 
 var authenticate = (req, res, next) => {
   var authenticate = req.header('Authorization');
@@ -25,11 +30,39 @@ var authenticate = (req, res, next) => {
 
 router.get('/', (req, res) => {
   res.json({'xu_ly': 'thong tin user'});
-});  //insert
+  MongoClient.connect(url, function(er, client){
+    if(er)
+      console.log(er);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.find({}).toArray(function(er, ds_user){
+      if(er)
+        console.log(er);
+
+      res.json({'xu_ly': 'thong tin user', 'data': ds_user});
+      client.close();
+    });
+  });  
+});//insert
 
 router.get('/:id_user', (req, res) => {
-  res.json({'xu_ly': 'thong tin user ' + req.params.id_user});
-});   //create or update
+  res.json({'xu_ly': 'thong tin user' + req.params.id_user});
+  MongoClient.connect(url, function(err, client){
+    if(err)
+      console.log(err);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.findOne({'email': req.params.id_user},function(err, ds_user){
+      if(err)
+        console.log(err);
+
+      res.json({'xu_ly': 'thong tin user', 'data': info_user});
+      client.close();
+    });
+  });  
+});//create or update  
 
 router.post('/', authenticate, (req, res) => {
   console.log(ahihi.length);
