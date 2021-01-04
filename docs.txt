@@ -11,4 +11,6 @@ npm start
 // built-in middleware
 // third-party middleware
 
-npm install --save mongodb
+npm install mongodb --save
+
+#command line -> mongod.exe --dbpath=C:\Program Files\MongoDB\Server\4.4\bin

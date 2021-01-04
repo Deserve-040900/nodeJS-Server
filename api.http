@@ -47,3 +47,66 @@ Authorization: Basic eHVhbm5ndXllbjowNDA5MDA=
     "password": "040900",
     "email": "muayarmy123@gmail.com"
 }
+
+####
+
+POST http://localhost:4000/User/sign-up
+Content-Type: application/json
+
+{
+    "name": "Xuan Nguyen",
+    "account": "xuannguyen",
+    "password": "040900",
+    "email": "muayarmy123@gmail.com"
+}
+
+####
+
+POST http://localhost:4000/users
+Content-Type: application/json
+Authorization: Basic eHVhbm5ndXllbjowNDA5MDA=
+
+[
+    {
+        "name": "Xuan Nguyen",
+        "account": "xuannguyen",
+        "password": "040900",
+        "email": "muayarmy123@gmail.com"
+    },
+    {
+        "name": "Nguyen Xuan",
+        "account": "nkoxngo",
+        "password": "123456",
+        "email": "nkoxkiu2k@gmail.com"
+    },
+    {
+        "name": "Ami Nguyen",
+        "account": "xuannguyen",
+        "password": "xuan2000",
+        "email": "nguyenthihaxuan040900hiie@gmail.com"
+    },
+    {
+        "name": "Emi Nguyen",
+        "account": "nguyenxuan",
+        "password": "01665017740",
+        "email": "ahihidocho@gmail.com"
+    }
+]
+
+####
+
+PUT http://localhost:4000/User/nguyenthihaxuan040900hiie@gmail.com
+Content-Type: application/json
+
+{
+    "name": "Xuan Nguyen",
+    "account": "xuannguyen",
+    "password": "040900",
+    "email": "muayarmy321@gmail.com"
+}
+
+####
+
+DELETE http://localhost:4000/User/nguyenthihaxuan040900hiie@gmail.com
+Content-Type: application/json
+Authorization: Basic eHVhbm5ndXllbjowNDA5MDA=

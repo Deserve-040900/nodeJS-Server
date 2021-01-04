@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var authenticate = require('../middleware/auth');
+
 const MongoClient = require('mongodb').MongoClient;
 
 const url = 'mongodb://localhost:27017';
@@ -38,8 +40,21 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/', (req, res) => {
-  res.json({'xu_ly': 'import nhieu user 1 luc'});
+router.post('/', authenticate.auth, (req, res) => {
+  MongoClient.connect(url, function(er, client){
+    if(er)
+      console.log(er);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.insertMany(req.body, () => {
+      res.json({
+        'xu_ly': 'update nhieu user 1 luc ', 
+        data_send: req.body
+      });
+    });
+  });  
+  // res.json({'xu_ly': 'import nhieu user 1 luc'});
 });  //insert
 
 router.put('/', (req, res) => {

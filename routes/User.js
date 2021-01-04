@@ -1,32 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var authenticate = require('../middleware/auth');
+
 const MongoClient = require('mongodb').MongoClient;
 
 const url = 'mongodb://localhost:27017';
 
 const dbName = 'database_mongodb';
-
-var authenticate = (req, res, next) => {
-  var authenticate = req.header('Authorization');
-  var array_auth = authenticate.split(' ');
-
-  // console.log(array_auth[1]);
-  var string_basic_auth = array_auth[1];
-  var data_string_auth = (new Buffer(string_basic_auth, 'base64')).toString();
-  // console.log(data_string_auth);
-
-  var user_info = data_string_auth.split(':');
-  if(user_info[0] == "xuannguyen" && user_info[1] == '040900'){
-    next();
-  }
-  else{
-    res.status(401);
-    res.json({
-      'error': true,
-      'error_message': "you don\'t have permission"
-    });
-  }
-}
 
 router.get('/', (req, res) => {
   res.json({'xu_ly': 'thong tin user'});
@@ -44,7 +24,7 @@ router.get('/', (req, res) => {
       client.close();
     });
   });  
-});//insert
+}); //insert
 
 router.get('/:id_user', (req, res) => {
   res.json({'xu_ly': 'thong tin user' + req.params.id_user});
@@ -62,18 +42,61 @@ router.get('/:id_user', (req, res) => {
       client.close();
     });
   });  
-});//create or update  
+}); //create or update  
 
-router.post('/', authenticate, (req, res) => {
-  console.log(ahihi.length);
+router.post('/', authenticate.auth, (req, res) => {
+  // console.log(ahihi.length);
   res.json({'xu_ly': 'them user moi ', data_send: req.body});
-});//delete
+}); //delete
 
 router.post('/sign-up', (req, res) => {
-  res.json({
-    'xu_ly': 'dang ky user moi ', 
-    data_send: req.body
-  });
+  MongoClient.connect(url, function(er, client){
+    if(er)
+      console.log(er);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.insertOne(req.body, () => {
+      res.json({
+        'xu_ly': 'dang ky user moi ', 
+        data_send: req.body
+      });
+    });
+  });  
 });
+
+router.put('/:email', (req, res) => {
+  MongoClient.connect(url, function(er, client){
+    if(er)
+      console.log(er);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.updateOne({email: req.params.email}, {$set: req.body}, () => {
+      res.json({
+        'xu_ly': 'update user ' + req.params + ' thành công', 
+        data_send: req.body
+      });
+    });
+  });
+}); //create or update
+
+router.delete('/:email', authenticate.auth, (req, res) => {
+  console.log(req.params.email);
+  
+  MongoClient.connect(url, function(er, client){
+    if(er)
+      console.log(er);
+
+    const db = client.db(dbName);
+    const collection_user = db.collection('users');
+    collection_user.deleteOne({email: req.params.email}, () => {
+      res.json({
+        'xu_ly': 'delete user ' + req.params.email + ' thành công', 
+        data_send: req.body
+      });
+    });
+  });
+}); //delete
 
 module.exports = router;
