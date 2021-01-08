@@ -110,3 +110,13 @@ Content-Type: application/json
 DELETE http://localhost:4000/User/nguyenthihaxuan040900hiie@gmail.com
 Content-Type: application/json
 Authorization: Basic eHVhbm5ndXllbjowNDA5MDA=
+
+####
+
+POST http://localhost:4000/User/log-in
+Content-Type: application/json
+
+{
+    "tai_khoan": "hungnguyen",
+    "mat_khau": "123456789"
+} 
